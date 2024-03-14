@@ -2,7 +2,7 @@
 # Calling VPC Module
 
 module "vpc" {
-  source   = "../module/vpc"
+  source   = "./module/vpc"
   vpc_cidr = var.vpc_cidr
   env_name           = var.env_name
   vpc_tag_name       = var.vpc_tag_name
@@ -12,7 +12,7 @@ module "vpc" {
 
 # Calling IGW Module
 module "igw" {
-  source       = "../module/igway"
+  source       = "./module/igway"
   vpc_id       = module.vpc.vpc_id_output
   env_name     = var.env_name
   igw_tag_name = var.igw_tag_name
@@ -20,7 +20,7 @@ module "igw" {
 
 # Calling Route Table Module
 module "route-table" {
-  source                 = "../module/route-table"
+  source                 = "./module/route-table"
   gateway_id             = module.igw.igw_id_output
   default_route_table_id = module.vpc.vpc_default_rtb_id_output
   subnet_ids             = module.vpc.subnet_id_output
@@ -30,7 +30,7 @@ module "route-table" {
 
 # Calling IAM Roles & Policies Module
 module "iam-roles-policies" {
-  source                   = "../module/iam-roles-policies"
+  source                   = "./module/iam-roles-policies"
   env_name                 = var.env_name
   eks_cluster_role_name    = var.eks_cluster_role_name
   eks_node_group_role_name = var.eks_node_group_role_name
@@ -38,7 +38,7 @@ module "iam-roles-policies" {
 
 # Calling Security Group Module
 module "security_group" {
-  source      = "../module/security_group"
+  source      = "./module/security_group"
   vpc_id      = module.vpc.vpc_id_output
   sg_name     = var.sg_name
   env_name    = var.env_name
@@ -48,7 +48,7 @@ module "security_group" {
 
 # Calling EKS Module
 module "eks" {
-  source                  = "../module/EKS"
+  source                  = "./module/EKS"
   vpc_id                  = module.vpc.vpc_id_output
   env_name                = var.env_name
   security_group_id       = module.security_group.sg_id_output
